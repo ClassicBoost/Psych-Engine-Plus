@@ -25,7 +25,7 @@ class FlashingState extends MusicBeatState
 
 		warnText = new FlxText(0, 0, FlxG.width,
 			"DISCLAIMER
-			This is NOT ment to harass any of the developers of\n
+			This is NOT meant to harass any of the developers of\n
 			Psych Engine, this modified engine is made purely for fun.\n
 
 			This Mod contains some flashing lights!\n
