@@ -28,6 +28,9 @@ class ClientPrefs {
 	public static var displayAccuracy:Bool = true;
 	public static var hitsounds:Bool = false;
 	public static var cameraMovements:Bool = true;
+	public static var noteGlow:Bool = true;
+	public static var opponentSplashes:Bool = true;
+	public static var safeFrames:Int = 6;
 
 	//Every key has two binds, these binds are defined on defaultKeys! If you want your control to be changeable, you have to add it on ControlsSubState (inside OptionsState.hx)'s list
 	public static var keyBinds:Map<String, Dynamic> = new Map<String, Dynamic>();
@@ -64,8 +67,8 @@ class ClientPrefs {
 		FlxG.save.data.noteSplashes = noteSplashes;
 		FlxG.save.data.lowQuality = lowQuality;
 		FlxG.save.data.framerate = framerate;
-		//FlxG.save.data.cursing = cursing;
-		//FlxG.save.data.violence = violence;
+		FlxG.save.data.cursing = cursing;
+		FlxG.save.data.violence = violence;
 		FlxG.save.data.camZooms = camZooms;
 		FlxG.save.data.noteOffset = noteOffset;
 		FlxG.save.data.hideHud = hideHud;
@@ -77,6 +80,9 @@ class ClientPrefs {
 		FlxG.save.data.hideTime = hideTime;
 		FlxG.save.data.hitsounds = hitsounds;
 		FlxG.save.data.cameraMovements = cameraMovements;
+		FlxG.save.data.noteGlow = noteGlow;
+		FlxG.save.data.safeFrames = safeFrames;
+		FlxG.save.data.opponentSplashes = opponentSplashes;
 		FlxG.save.data.achievementsMap = Achievements.achievementsMap;
 		FlxG.save.data.henchmenDeath = Achievements.henchmenDeath;
 		FlxG.save.flush();
@@ -129,12 +135,12 @@ class ClientPrefs {
 				FlxG.updateFramerate = framerate;
 			}
 		}
-		/*if(FlxG.save.data.cursing != null) {
+		if(FlxG.save.data.cursing != null) {
 			cursing = FlxG.save.data.cursing;
 		}
 		if(FlxG.save.data.violence != null) {
 			violence = FlxG.save.data.violence;
-		}*/
+		}
 		if(FlxG.save.data.camZooms != null) {
 			camZooms = FlxG.save.data.camZooms;
 		}
@@ -159,6 +165,15 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.hideTime != null) {
 			hideTime = FlxG.save.data.hideTime;
+		}
+		if(FlxG.save.data.noteGlow != null) {
+			noteGlow = FlxG.save.data.noteGlow;
+		}
+		if(FlxG.save.data.opponentSplashes != null) {
+			opponentSplashes = FlxG.save.data.opponentSplashes;
+		}
+		if(FlxG.save.data.safeFrames != null) {
+			safeFrames = FlxG.save.data.safeFrames;
 		}
 		if(FlxG.save.data.cameraMovements != null) {
 			cameraMovements = FlxG.save.data.cameraMovements;

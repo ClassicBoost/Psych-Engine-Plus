@@ -711,7 +711,8 @@ class PreferencesSubstate extends MusicBeatSubstate
 	static var noCheckbox:Array<String> = [
 		'Framerate',
 		'Note Delay',
-		'Ghost Tapping'
+		'Ghost Tapping',
+		'Safe Frames'
 	];
 
 	static var options:Array<String> = [
@@ -726,11 +727,15 @@ class PreferencesSubstate extends MusicBeatSubstate
 		'Show Judgements',
 		'Display Accuracy',
 		'Note Splashes',
+		'Opponent Note Splash',
 		'Hide HUD',
 		'Hide Song Length',
 		'Flashing Lights',
 		'Camera Zooms',
 		'Camera Movements',
+		'Note Glow',
+		'Swearing',
+		'Violence',
 		#if !mobile
 		'FPS Counter',
 		#end
@@ -738,6 +743,7 @@ class PreferencesSubstate extends MusicBeatSubstate
 		'Downscroll',
 		'Middlescroll',
 		'Ghost Tapping',
+		'Safe Frames',
 		'Hitsounds',
 		'Note Delay'
 	];
@@ -837,6 +843,8 @@ class PreferencesSubstate extends MusicBeatSubstate
 			changeSelection(1);
 		}
 
+		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000;
+
 		if (controls.BACK) {
 			grpOptions.forEachAlive(function(spr:Alphabet) {
 				spr.alpha = 0;
@@ -890,6 +898,8 @@ class PreferencesSubstate extends MusicBeatSubstate
 				daText = 'If checked, your judgements will appear when you hit a note.';
 			case 'Hitsounds':
 				daText = 'If checked, notes will make a tick sound if they are hit.';
+			case 'Opponent Note Splash':
+				daText = 'If checked, every time the opponent hits a note their note will splash\njust like the player.';
 			case 'Ghost Tapping':
 				if (ClientPrefs.ghostTapping == 0)
 				daText = "You'll always miss if you press a invalid note.";
@@ -899,6 +909,10 @@ class PreferencesSubstate extends MusicBeatSubstate
 				daText = "You'll never miss from pressing invalid notes\nregardless if you're singing.";
 			case 'Swearing':
 				daText = "If unchecked, your mom won't be angry at you.";
+			case 'Note Glow':
+				daText = "If checked, the notes will glow whenever they\nare able to be hit.";
+			case 'Safe Frames':
+				daText = "Adjust the safe frames for the notes.\n(Higher the number easier to hit the notes, but also\nmore broken the note glow if it\'s enabled.)";
 			case 'Violence':
 				daText = "If unchecked, you won't get disgusted as frequently.";
 			case 'Note Splashes':
@@ -956,6 +970,9 @@ class PreferencesSubstate extends MusicBeatSubstate
 					case 'Swearing':
 						ClientPrefs.cursing = !ClientPrefs.cursing;
 
+					case 'Opponent Note Splash':
+						ClientPrefs.opponentSplashes = !ClientPrefs.opponentSplashes;
+
 					case 'Downscroll':
 						ClientPrefs.downScroll = !ClientPrefs.downScroll;
 
@@ -967,6 +984,9 @@ class PreferencesSubstate extends MusicBeatSubstate
 
 					case 'Display Accuracy':
 						ClientPrefs.displayAccuracy = !ClientPrefs.displayAccuracy;
+
+					case 'Note Glow':
+						ClientPrefs.noteGlow = !ClientPrefs.noteGlow;
 
 				//	case 'Ghost Tapping':
 				//		ClientPrefs.ghostTapping = !ClientPrefs.ghostTapping;
@@ -1020,6 +1040,10 @@ class PreferencesSubstate extends MusicBeatSubstate
 						ClientPrefs.ghostTapping += add;
 						if(ClientPrefs.ghostTapping < 0) ClientPrefs.ghostTapping = 0;
 						else if(ClientPrefs.ghostTapping > 2) ClientPrefs.ghostTapping = 2;
+					case 'Safe Frames':
+						ClientPrefs.safeFrames += add;
+						if(ClientPrefs.safeFrames < 2) ClientPrefs.safeFrames = 2;
+						else if(ClientPrefs.safeFrames > 20) ClientPrefs.safeFrames = 20;
 				}
 				reloadValues();
 
@@ -1117,6 +1141,8 @@ class PreferencesSubstate extends MusicBeatSubstate
 						daValue = ClientPrefs.violence;
 					case 'Camera Zooms':
 						daValue = ClientPrefs.camZooms;
+					case 'Note Glow':
+						daValue = ClientPrefs.noteGlow;
 					case 'Hide HUD':
 						daValue = ClientPrefs.hideHud;
 					case 'Hitsounds':
@@ -1140,6 +1166,8 @@ class PreferencesSubstate extends MusicBeatSubstate
 						daText = '' + ClientPrefs.framerate;
 					case 'Note Delay':
 						daText = ClientPrefs.noteOffset + 'ms';
+					case 'Safe Frames':
+						daText = ClientPrefs.safeFrames + '';
 					case 'Ghost Tapping':
 						daText = (ClientPrefs.ghostTapping == 1 ? "not singing" : ClientPrefs.ghostTapping == 2 ? "always" : ClientPrefs.ghostTapping == 0 ? "never" : "") + '';
 				}
