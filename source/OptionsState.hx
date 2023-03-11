@@ -1135,6 +1135,8 @@ class PreferencesSubstate extends MusicBeatSubstate
 						daValue = ClientPrefs.displayAccuracy;
 				//	case 'Ghost Tapping':
 				//		daValue = ClientPrefs.ghostTapping;
+					case 'Opponent Note Splash':
+						daValue = ClientPrefs.opponentSplashes;
 					case 'Swearing':
 						daValue = ClientPrefs.cursing;
 					case 'Violence':
