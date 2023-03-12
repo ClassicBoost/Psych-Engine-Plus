@@ -901,7 +901,7 @@ class PlayState extends MusicBeatState
 		FlxG.fixedTimestep = false;
 		moveCameraSection(0);
 
-		var waterMark:FlxText = new FlxText(0, healthBarBG.y + 50, FlxG.width, 'BetterPsych v${MainMenuState.betterPsychVer} (PE v${MainMenuState.psychEngineVersion})', 20);
+		var waterMark:FlxText = new FlxText(0, healthBarBG.y + 50, FlxG.width, 'Psych+ v${MainMenuState.betterPsychVer} (PE v${MainMenuState.psychEngineVersion})', 20);
 		waterMark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		waterMark.scrollFactor.set();
 		waterMark.borderSize = 1.5;
