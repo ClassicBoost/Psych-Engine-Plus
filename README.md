@@ -1,5 +1,6 @@
-# Friday Night Funkin' - BetterPsych
-BetterPsych is a Psych Engine 0.4.2 improvement with some features from 0.6 as well with new ones such as winning icons and camera movements and elements from other engines like FPS Plus.
+# Friday Night Funkin' - Psych+
+Psych+ is a Psych Engine 0.4.2 improvement with some features from 0.6 as well with new ones such as winning icons and camera movements and elements from other engines like FPS Plus.
+Blah blah blah, you get it. It's another Psych Engine modification, deal with it and stop trashing on Psych Engine forks like OS Engine.
 # Psych Engine
 Engine originally used on [Mind Games Mod](https://gamebanana.com/mods/301107), intended to be a fix for the vanilla version's many issues while keeping the casual play aspect of it. Also aiming to be an easier alternative to newbie coders.
 
