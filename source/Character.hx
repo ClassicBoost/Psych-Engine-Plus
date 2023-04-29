@@ -23,6 +23,7 @@ typedef CharacterFile = {
 	var scale:Float;
 	var sing_duration:Float;
 	var healthicon:String;
+	var winning_icon:Bool;
 
 	var position:Array<Float>;
 	var camera_position:Array<Float>;
@@ -60,6 +61,7 @@ class Character extends FlxSprite
 	public var danceIdle:Bool = false; //Character use "danceLeft" and "danceRight" instead of "idle"
 
 	public var healthIcon:String = 'face';
+	public var hasWinningIcon:Bool = true;
 	public var animationsArray:Array<AnimArray> = [];
 
 	public var positionArray:Array<Float> = [0, 0];
@@ -135,6 +137,7 @@ class Character extends FlxSprite
 				healthIcon = json.healthicon;
 				singDuration = json.sing_duration;
 				flipX = !!json.flip_x;
+				hasWinningIcon = json.winning_icon;
 				if(json.no_antialiasing) {
 					antialiasing = false;
 					noAntialiasing = true;

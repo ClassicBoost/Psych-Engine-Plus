@@ -15,8 +15,10 @@ import flixel.graphics.FlxGraphic;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.addons.ui.FlxInputText;
+import flixel.tweens.FlxEase;
 import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.addons.ui.FlxUI;
+import flixel.tweens.FlxTween;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
@@ -77,6 +79,8 @@ class CharacterEditorState extends MusicBeatState
 	var cameraFollowPointer:FlxSprite;
 	var healthBarBG:FlxSprite;
 
+	var muteMusicCheckBox:FlxUICheckBox;
+
 	override function create()
 	{
 		//FlxG.sound.playMusic(Paths.music('breakfast'), 0.5);
@@ -86,6 +90,8 @@ class CharacterEditorState extends MusicBeatState
 		camHUD.bgColor.alpha = 0;
 		camMenu = new FlxCamera();
 		camMenu.bgColor.alpha = 0;
+
+		FlxG.sound.playMusic(Paths.music('voidBoutique'), 0.45);
 
 		FlxG.cameras.reset(camEditor);
 		FlxG.cameras.add(camHUD);
@@ -129,11 +135,21 @@ class CharacterEditorState extends MusicBeatState
 
 		textAnim = new FlxText(300, 16);
 		textAnim.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		textAnim.borderSize = 1;
+		textAnim.borderSize = 1.5;
 		textAnim.size = 32;
 		textAnim.scrollFactor.set();
 		textAnim.cameras = [camHUD];
 		add(textAnim);
+
+		var composerStuff:FlxText = new FlxText(100, 500, "Void Boutique\nMade by: Skellix\n");
+		composerStuff.setFormat(16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		composerStuff.borderSize = 1.5;
+		composerStuff.size = 32;
+		composerStuff.scrollFactor.set();
+		composerStuff.cameras = [camHUD];
+		add(composerStuff);
+
+		FlxTween.tween(composerStuff, {alpha: 0}, 5, {ease: FlxEase.linear});
 
 		genBoyOffsets();
 
@@ -150,11 +166,11 @@ class CharacterEditorState extends MusicBeatState
 			\nArrow Keys - Move Character Offset
 			\nHold Shift to Move 10x faster\n", 12);
 		tipText.cameras = [camHUD];
-		tipText.setFormat(null, 12, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		tipText.setFormat(null, 10, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		tipText.scrollFactor.set();
-		tipText.borderSize = 1;
+		tipText.borderSize = 1.5;
 		tipText.x -= tipText.width;
-		tipText.y -= tipText.height - 10;
+		tipText.y -= tipText.height + 80;
 		add(tipText);
 
 		FlxG.camera.follow(camFollow);
@@ -197,6 +213,17 @@ class CharacterEditorState extends MusicBeatState
 		FlxG.mouse.visible = true;
 		reloadCharacterOptions();
 
+		muteMusicCheckBox = new FlxUICheckBox(1000, 650, null, null, "Mute Music", 0);
+		muteMusicCheckBox.checked = false;
+		muteMusicCheckBox.cameras = [camHUD];
+		muteMusicCheckBox.callback = function() {
+			FlxG.sound.music.volume = 0;
+			if(!muteMusicCheckBox.checked) {
+				FlxG.sound.music.volume = 0.45;
+			}
+		};
+		add(muteMusicCheckBox);
+
 		super.create();
 	}
 
@@ -224,23 +251,23 @@ class CharacterEditorState extends MusicBeatState
 				playerYDifference = 220;
 			}
 
-			var bgSky:BGSprite = new BGSprite('weeb/weebSky', OFFSET_X - (playerXDifference / 2) - 300, 0 - playerYDifference, 0.1, 0.1);
+			var bgSky:BGSprite = new BGSprite('backgrounds/schoolweebSky', OFFSET_X - (playerXDifference / 2) - 300, 0 - playerYDifference, 0.1, 0.1);
 			bgLayer.add(bgSky);
 			bgSky.antialiasing = false;
 
 			var repositionShit = -200 + OFFSET_X - playerXDifference;
 
-			var bgSchool:BGSprite = new BGSprite('weeb/weebSchool', repositionShit, -playerYDifference + 6, 0.6, 0.90);
+			var bgSchool:BGSprite = new BGSprite('backgrounds/schoolweebSchool', repositionShit, -playerYDifference + 6, 0.6, 0.90);
 			bgLayer.add(bgSchool);
 			bgSchool.antialiasing = false;
 
-			var bgStreet:BGSprite = new BGSprite('weeb/weebStreet', repositionShit, -playerYDifference, 0.95, 0.95);
+			var bgStreet:BGSprite = new BGSprite('backgrounds/schoolweebStreet', repositionShit, -playerYDifference, 0.95, 0.95);
 			bgLayer.add(bgStreet);
 			bgStreet.antialiasing = false;
 
 			var widShit = Std.int(bgSky.width * 6);
 			var bgTrees:FlxSprite = new FlxSprite(repositionShit - 380, -800 - playerYDifference);
-			bgTrees.frames = Paths.getPackerAtlas('weeb/weebTrees');
+			bgTrees.frames = Paths.getPackerAtlas('backgrounds/schoolweebTrees');
 			bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
 			bgTrees.animation.play('treeLoop');
 			bgTrees.scrollFactor.set(0.85, 0.85);
@@ -258,10 +285,10 @@ class CharacterEditorState extends MusicBeatState
 			bgTrees.updateHitbox();
 			changeBGbutton.text = "Regular BG";
 		} else {
-			var bg:BGSprite = new BGSprite('stageback', -600 + OFFSET_X - playerXDifference, -300, 0.9, 0.9);
+			var bg:BGSprite = new BGSprite('backgrounds/stage/stageback', -600 + OFFSET_X - playerXDifference, -300, 0.9, 0.9);
 			bgLayer.add(bg);
 
-			var stageFront:BGSprite = new BGSprite('stagefront', -650 + OFFSET_X - playerXDifference, 500, 0.9, 0.9);
+			var stageFront:BGSprite = new BGSprite('backgrounds/stage/stagefront', -650 + OFFSET_X - playerXDifference, 500, 0.9, 0.9);
 			stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
 			stageFront.updateHitbox();
 			bgLayer.add(stageFront);
@@ -380,6 +407,7 @@ class CharacterEditorState extends MusicBeatState
 	var positionCameraYStepper:FlxUINumericStepper;
 
 	var flipXCheckBox:FlxUICheckBox;
+	var winningIconCheckBox:FlxUICheckBox;
 	var noAntialiasingCheckBox:FlxUICheckBox;
 
 	var healthColorStepperR:FlxUINumericStepper;
@@ -415,6 +443,16 @@ class CharacterEditorState extends MusicBeatState
 			if(char.isPlayer) char.flipX = !char.flipX;
 			
 			ghostChar.flipX = char.flipX;
+		};
+
+		winningIconCheckBox = new FlxUICheckBox(singDurationStepper.x, singDurationStepper.y + 100, null, null, "Has Winning Icon", 0);
+		winningIconCheckBox.checked = char.hasWinningIcon;
+		winningIconCheckBox.callback = function() {
+			char.hasWinningIcon = false;
+			if(winningIconCheckBox.checked) {
+				char.hasWinningIcon = true;
+			}
+			char.hasWinningIcon = winningIconCheckBox.checked;
 		};
 
 		noAntialiasingCheckBox = new FlxUICheckBox(flipXCheckBox.x, flipXCheckBox.y + 40, null, null, "No Antialiasing", 80);
@@ -454,6 +492,7 @@ class CharacterEditorState extends MusicBeatState
 		tab_group.add(singDurationStepper);
 		tab_group.add(scaleStepper);
 		tab_group.add(flipXCheckBox);
+		tab_group.add(winningIconCheckBox);
 		tab_group.add(noAntialiasingCheckBox);
 		tab_group.add(positionXStepper);
 		tab_group.add(positionYStepper);
@@ -839,6 +878,7 @@ class CharacterEditorState extends MusicBeatState
 			scaleStepper.value = char.jsonScale;
 			flipXCheckBox.checked = char.originalFlipX;
 			noAntialiasingCheckBox.checked = char.noAntialiasing;
+			winningIconCheckBox.checked = char.hasWinningIcon;
 			resetHealthBarColor();
 			leHealthIcon.changeIcon(healthIconInputText.text);
 			positionXStepper.value = char.positionArray[0];
@@ -1126,6 +1166,7 @@ class CharacterEditorState extends MusicBeatState
 			"scale": char.jsonScale,
 			"sing_duration": char.singDuration,
 			"healthicon": char.healthIcon,
+			"winning_icon": char.hasWinningIcon,
 		
 			"position":	char.positionArray,
 			"camera_position": char.cameraPosition,

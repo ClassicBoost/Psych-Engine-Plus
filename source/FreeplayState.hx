@@ -199,6 +199,7 @@ class FreeplayState extends MusicBeatState
 
 	var instPlaying:Int = -1;
 	private static var vocals:FlxSound = null;
+	var daRank:String = '?';
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.7)
@@ -214,8 +215,27 @@ class FreeplayState extends MusicBeatState
 		if (Math.abs(lerpRating - intendedRating) <= 0.01)
 			lerpRating = intendedRating;
 
-		scoreText.text = 'PERSONAL BEST: ' + lerpScore + ' (' + Math.floor(lerpRating * 100) + '%)';
+		scoreText.text = 'PERSONAL BEST: ' + lerpScore + ' (${Math.floor(lerpRating * 100) + '% | ' + daRank})';
 		positionHighscore();
+
+		if (lerpRating == 1)
+			daRank = 'PERFECT!!';
+		else if (lerpRating < 1 && lerpRating >= 0.999)
+			daRank = 'WOW!';
+		else if (lerpRating < 1 && lerpRating >= 0.9)
+			daRank = 'SICK!';
+		else if (lerpRating < 0.9 && lerpRating >= 0.8)
+			daRank = 'Ok';
+		else if (lerpRating < 0.8 && lerpRating >= 0.7)
+			daRank = 'Meh';
+		else if (lerpRating == 0.69)
+			daRank = 'heh nice';
+		else if (lerpRating < 0.69 && lerpRating >= 0.6)
+			daRank = 'Bad';
+		else if (lerpRating < 0.6 && lerpRating > 0)
+			daRank = 'Awful';
+		else
+			daRank = '?';
 
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;

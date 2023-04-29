@@ -63,6 +63,7 @@
 		360
 	],
 	"healthicon": "senpai-pixel",
+	"winning_icon": true,
 	"flip_x": false,
 	"healthbar_colors": [
 		255,
